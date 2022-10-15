@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const AsideContainer = styled.aside`
-  background: var(--color-gray100);
+  background: var(--color-white);
   border-radius: 1px;
   box-shadow: 4px 4px 24px #e1e1e1, -24px -24px 34px #ededed;
   ul {
@@ -19,7 +19,7 @@ export const AsideContainer = styled.aside`
         }
       }
       .active {
-        background-color: var(--color-white);
+        background-color: var(--color-gray100);
         padding: 1rem;
         border-radius: 0.5rem;
       }

@@ -4,7 +4,7 @@ import MainLayout from "../layout/MainLayout";
 const Classes = () => {
   return (
     <MainLayout>
-      <h1>Clases</h1>
+      <h1>classes</h1>
     </MainLayout>
   );
 };
