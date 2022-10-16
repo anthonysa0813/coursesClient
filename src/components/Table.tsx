@@ -10,6 +10,7 @@ import TextArea from "./elements/TextArea";
 import Modal from "./Modal";
 import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import Search from "./Search";
 
 const Table = () => {
   const [coursesData, setCoursesData] = useState<CoursesResponse[] | []>([]);
@@ -32,6 +33,7 @@ const Table = () => {
     slug: "",
     teacher: "",
   });
+  const [searchInput, setSearchInput] = useState("");
 
   const { name, price, description, slug, teacher, handleChange, form } =
     useForm(formInitialValue);
@@ -178,6 +180,11 @@ const Table = () => {
           </BoxModalToDelete>
         </Modal>
       )}
+      <Search
+        searchInput={searchInput}
+        setSearchInput={setSearchInput}
+        setCoursesData={setCoursesData}
+      />
       <TableContainer>
         <div className="tableHead">
           <h3>Todos los Cursos ({coursesData.length})</h3>
@@ -234,12 +241,12 @@ const Table = () => {
                     </div>
                   </div>
                   <div className="duration">
-                    <div
+                    <Link
+                      to={`/course/${course._id}`}
                       className="statusButton fill-warning"
-                      onClick={() => editFunc(course)}
                     >
-                      <Link to={`/course/${course._id}`}>Editar</Link>
-                    </div>
+                      Editar
+                    </Link>
                   </div>
                 </div>
               </>

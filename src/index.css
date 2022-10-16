@@ -76,3 +76,7 @@ a {
 .text-title {
   font-weight: bolder;
 }
+
+.danger {
+  color: var(--color-red);
+}

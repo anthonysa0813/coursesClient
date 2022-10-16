@@ -46,3 +46,11 @@ export const getCourseFetch = async (endpoint: string, id: string) => {
   const data = await response.json();
   return data;
 };
+
+export const getCoursesQuery = async (endpoint: string, value: string) => {
+  // courses?name=html
+  // console.log(`${URL_DEV}/${endpoint}?name=${value}`);
+  const response = await fetch(`${URL_DEV}/${endpoint}?name=${value}`);
+  const data = response.json();
+  return data;
+};

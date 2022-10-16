@@ -10,9 +10,11 @@ import { CoursesResponse } from "../interfaces";
 import useForm from "../hooks/useForm";
 import Button from "../components/elements/Button";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const EditCourse = () => {
   const { id = "" } = useParams();
+  const navigate = useNavigate();
   const [currentCourse, setCurrentCourse] = useState<CoursesResponse>({
     name: "",
     price: "",
@@ -73,6 +75,7 @@ const EditCourse = () => {
       notifySuccess();
       setTimeout(() => {
         window.location.reload();
+        navigate(-1);
       }, 2500);
     });
   };
