@@ -5,16 +5,26 @@ interface PropInput {
   style?: string;
   value?: string;
   placeholder: string;
-  // onChange?: (value: string) => void
+  name: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input = ({ type, style, value, placeholder }: PropInput) => {
+const Input = ({
+  type,
+  style,
+  value,
+  placeholder,
+  name,
+  onChange,
+}: PropInput) => {
   return (
     <input
       type={type}
       className={style}
       value={value}
       placeholder={placeholder}
+      name={name}
+      onChange={onChange}
     />
   );
 };

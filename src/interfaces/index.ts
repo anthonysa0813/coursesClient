@@ -1,14 +1,19 @@
 export interface CoursesResponse {
-  _id: string;
+  _id?: string;
   name: string;
   slug: string;
-  status: boolean;
+  status?: boolean;
   teacher: string;
   price: string;
   description: string;
-  __v: number;
+  __v?: number;
 }
 
 export interface PropChildrenJsx {
   children: JSX.Element[] | JSX.Element;
+}
+
+export interface CreatePropCourse {
+  endpoint: string;
+  data: CoursesResponse;
 }

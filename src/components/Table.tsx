@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { getData } from "../api/useFetch";
+import { getData, postfetch } from "../api/useFetch";
+import useForm from "../hooks/useForm";
 import { CoursesResponse } from "../interfaces";
 import { BoxModal, ModalContainer } from "../styles/Modal";
 import { TableContainer } from "../styles/TableStyle";
@@ -8,11 +9,24 @@ import Input from "./elements/Input";
 import Label from "./elements/Label";
 import TextArea from "./elements/TextArea";
 import Modal from "./Modal";
+import { ToastContainer, toast } from "react-toastify";
 
 const Table = () => {
   const [coursesData, setCoursesData] = useState<CoursesResponse[] | []>([]);
   const [blockActive, setBlockActive] = useState(false);
-  const [showModal, seTshowModal] = useState(true);
+  const [showModal, seTshowModal] = useState(false);
+  const [error, setError] = useState(false);
+  const notifySuccess = () => toast("Se creó el curso");
+  const [formInitialValue, setFormInitialValue] = useState({
+    name: "",
+    price: "",
+    description: "",
+    slug: "",
+    teacher: "",
+  });
+
+  const { name, price, description, slug, teacher, handleChange } =
+    useForm(formInitialValue);
 
   useEffect(() => {
     getData("courses").then((res) => {
@@ -27,20 +41,64 @@ const Table = () => {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("jeje");
+    if ([name, description, price, description, slug].includes("")) {
+      setError(true);
+      console.log("todos los campos son obligatorios");
+      return;
+    }
+    postfetch("courses", {
+      name,
+      price,
+      description,
+      slug,
+      teacher,
+    }).then((res) => {
+      notifySuccess();
+      seTshowModal(false);
+    });
   };
 
   return (
     <>
+      <ToastContainer />
       {showModal && (
         <Modal showModalFunc={showModalFunc}>
           <h1>CREA UN NUEVO CURSO</h1>
           <form onSubmit={onSubmit}>
-            <Input placeholder="Escribe el nombre" type="text" value="" />
-            <Input placeholder="Escribi el slug" type="text" value="" />
-            <Input placeholder="Cuál es el precio?" type="number" value="" />
-            <Input placeholder="Quién es el profesor" type="text" value="" />
-            <TextArea placeholder="Escribe una descripción..." />
+            <Input
+              name="name"
+              placeholder="Escribe el nombre"
+              type="text"
+              value={name}
+              onChange={handleChange}
+            />
+            <Input
+              name="slug"
+              placeholder="Escribi el slug"
+              type="text"
+              value={slug}
+              onChange={handleChange}
+            />
+            <Input
+              name="price"
+              placeholder="Cuál es el precio?"
+              type="number"
+              value={price}
+              onChange={handleChange}
+            />
+            <Input
+              name="teacher"
+              placeholder="Quién es el profesor"
+              type="text"
+              value={teacher}
+              onChange={handleChange}
+            />
+            <TextArea
+              name="description"
+              onChange={handleChange}
+              value={description}
+              placeholder="Escribe una descripción..."
+            />
             <Button bg="fill-dark" type="submit">
               <span>Agregar</span>
             </Button>

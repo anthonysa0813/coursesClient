@@ -25,7 +25,7 @@ export const BoxModal = styled.div`
   padding: 1rem 2rem;
   background-color: var(--color-white);
   border-radius: 0.25rem;
-  min-width: 400px;
+  min-width: 500px;
   position: relative;
   form {
     display: flex;

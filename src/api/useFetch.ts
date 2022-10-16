@@ -8,3 +8,15 @@ export const getData = async (endpoint: string) => {
   const data = response.json();
   return data;
 };
+
+export const postfetch = async (endpoint: string, data: CoursesResponse) => {
+  const response = await fetch(`${URL_DEV}/${endpoint}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  const dataRes = await response.json();
+  return dataRes;
+};
