@@ -28,3 +28,21 @@ export const deleteFetch = async (endpoint: string, id: string) => {
   const data = await response.json();
   return data;
 };
+
+export const editFetch = async (endpoint: string, data: CoursesResponse) => {
+  const response = await fetch(`${URL_DEV}/${endpoint}/${data._id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  const dataResponse = await response.json();
+  return dataResponse;
+};
+
+export const getCourseFetch = async (endpoint: string, id: string) => {
+  const response = await fetch(`${URL_DEV}/${endpoint}/${id}`);
+  const data = await response.json();
+  return data;
+};

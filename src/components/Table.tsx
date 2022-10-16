@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { deleteFetch, getData, postfetch } from "../api/useFetch";
+import { deleteFetch, editFetch, getData, postfetch } from "../api/useFetch";
 import useForm from "../hooks/useForm";
 import { CoursesResponse } from "../interfaces";
 import { BoxModalToDelete, TableContainer } from "../styles/TableStyle";
@@ -9,15 +9,21 @@ import Label from "./elements/Label";
 import TextArea from "./elements/TextArea";
 import Modal from "./Modal";
 import { ToastContainer, toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const Table = () => {
   const [coursesData, setCoursesData] = useState<CoursesResponse[] | []>([]);
   const [blockActive, setBlockActive] = useState(false);
   const [showModal, seTshowModal] = useState(false);
   const [showModalToDelete, setShowModalToDelete] = useState(false);
+  const [currentCourse, setCurrentCourse] = useState<CoursesResponse>(
+    {} as CoursesResponse
+  );
+  const [showEdit, setShowEdit] = useState(false);
   const [error, setError] = useState(false);
   const notifySuccess = () => toast("Se creó el curso");
   const notifySuccessDelete = () => toast("Se eliminó el/los curso(s)");
+  const notifySuccessEdit = () => toast("Se editó el curso");
   const [coursesToDelete, setCoursesToDelete] = useState<String[] | []>([]);
   const [formInitialValue, setFormInitialValue] = useState({
     name: "",
@@ -27,7 +33,7 @@ const Table = () => {
     teacher: "",
   });
 
-  const { name, price, description, slug, teacher, handleChange } =
+  const { name, price, description, slug, teacher, handleChange, form } =
     useForm(formInitialValue);
 
   useEffect(() => {
@@ -42,6 +48,10 @@ const Table = () => {
 
   const showModalFunc = () => {
     seTshowModal((state) => !state);
+  };
+
+  const showModalEditFunc = () => {
+    setShowEdit((state) => !state);
   };
 
   const showModalToDeleteFunc = () => {
@@ -89,6 +99,22 @@ const Table = () => {
       notifySuccessDelete();
       showModalToDeleteFunc();
       window.location.reload();
+    });
+  };
+
+  const editFunc = (course: CoursesResponse) => {
+    setShowEdit((state) => !state);
+    setCurrentCourse(course);
+    setFormInitialValue(course);
+  };
+  const handleEdit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    editFetch("courses", form).then((res) => {
+      notifySuccessEdit();
+      setShowEdit(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     });
   };
 
@@ -194,17 +220,13 @@ const Table = () => {
                   <div className="title">{course.name}</div>
                   <div className="slug">{course.slug}</div>
                   <div className="status">
-                    {course.status ? (
-                      <div
-                        className={`statusButton ${
-                          course.status ? "published" : "draft"
-                        }`}
-                      >
-                        Published
-                      </div>
-                    ) : (
-                      "Draft"
-                    )}
+                    <div
+                      className={`statusButton ${
+                        course.status ? "published" : "draft"
+                      }`}
+                    >
+                      {course.status ? "published" : "draft"}
+                    </div>
                   </div>
                   <div className="price">
                     <div className={`statusButton priceBg`}>
@@ -212,7 +234,12 @@ const Table = () => {
                     </div>
                   </div>
                   <div className="duration">
-                    <div className="statusButton fill-warning">Editar</div>
+                    <div
+                      className="statusButton fill-warning"
+                      onClick={() => editFunc(course)}
+                    >
+                      <Link to={`/course/${course._id}`}>Editar</Link>
+                    </div>
                   </div>
                 </div>
               </>

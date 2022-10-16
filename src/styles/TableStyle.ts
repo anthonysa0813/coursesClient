@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 export const TableContainer = styled.div`
-  margin-block-start: 42px;
+  margin-block: 42px;
   padding-inline: 16px;
+
   .tableHead {
     display: flex;
     justify-content: space-between;
@@ -50,7 +51,12 @@ export const TableContainer = styled.div`
     background-color: var(--color-green);
   }
   .draft {
-    background-color: var(--color-gray200);
+    background-color: var(--color-gray100);
+    color: var(--color-black);
+    min-width: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .priceBg {
     background-color: var(--color-purple);
