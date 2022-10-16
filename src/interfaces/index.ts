@@ -8,3 +8,7 @@ export interface CoursesResponse {
   description: string;
   __v: number;
 }
+
+export interface PropChildrenJsx {
+  children: JSX.Element[] | JSX.Element;
+}
