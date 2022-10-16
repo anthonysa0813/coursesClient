@@ -15,6 +15,10 @@ export const TableContainer = styled.div`
       &:hover {
       }
     }
+    .actions {
+      display: flex;
+      column-gap: 1rem;
+    }
   }
   .tableBox {
     border-radius: 8px;
@@ -64,5 +68,25 @@ export const TableContainer = styled.div`
   }
   .blockActive {
     border-left: 2px solid var(--color-blue);
+  }
+`;
+
+export const BoxModalToDelete = styled.div`
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  padding: 2rem;
+  h3 {
+    margin: 0;
+    font-size: 2rem;
+  }
+  strong {
+    font-weight: bold;
+    margin-block-start: 2rem;
+    font-size: 24px;
+  }
+  button {
+    display: inline-block;
+    width: 200px;
   }
 `;

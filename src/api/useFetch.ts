@@ -20,3 +20,11 @@ export const postfetch = async (endpoint: string, data: CoursesResponse) => {
   const dataRes = await response.json();
   return dataRes;
 };
+
+export const deleteFetch = async (endpoint: string, id: string) => {
+  const response = await fetch(`${URL_DEV}/${endpoint}/${id}`, {
+    method: "DELETE",
+  });
+  const data = await response.json();
+  return data;
+};

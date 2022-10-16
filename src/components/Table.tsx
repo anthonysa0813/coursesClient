@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getData, postfetch } from "../api/useFetch";
+import { deleteFetch, getData, postfetch } from "../api/useFetch";
 import useForm from "../hooks/useForm";
 import { CoursesResponse } from "../interfaces";
-import { BoxModal, ModalContainer } from "../styles/Modal";
-import { TableContainer } from "../styles/TableStyle";
+import { BoxModalToDelete, TableContainer } from "../styles/TableStyle";
 import Button from "./elements/Button";
 import Input from "./elements/Input";
 import Label from "./elements/Label";
@@ -15,8 +14,11 @@ const Table = () => {
   const [coursesData, setCoursesData] = useState<CoursesResponse[] | []>([]);
   const [blockActive, setBlockActive] = useState(false);
   const [showModal, seTshowModal] = useState(false);
+  const [showModalToDelete, setShowModalToDelete] = useState(false);
   const [error, setError] = useState(false);
   const notifySuccess = () => toast("Se creó el curso");
+  const notifySuccessDelete = () => toast("Se eliminó el/los curso(s)");
+  const [coursesToDelete, setCoursesToDelete] = useState<String[] | []>([]);
   const [formInitialValue, setFormInitialValue] = useState({
     name: "",
     price: "",
@@ -34,9 +36,16 @@ const Table = () => {
       setCoursesData(res);
     });
   }, []);
+  useEffect(() => {
+    console.log(coursesToDelete);
+  }, [coursesToDelete]);
 
   const showModalFunc = () => {
     seTshowModal((state) => !state);
+  };
+
+  const showModalToDeleteFunc = () => {
+    setShowModalToDelete((state) => !state);
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -55,6 +64,31 @@ const Table = () => {
     }).then((res) => {
       notifySuccess();
       seTshowModal(false);
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
+    });
+  };
+
+  const addDeleteCourse = (id: string = "") => {
+    if (coursesToDelete.includes(id as never)) {
+      const filterArr = coursesToDelete.filter((courseId) =>
+        courseId === id ? !courseId : courseId
+      );
+      setCoursesToDelete(filterArr);
+    } else {
+      setCoursesToDelete([...coursesToDelete, id]);
+    }
+  };
+
+  const deleteCourses = () => {
+    const newArrToDelete = coursesToDelete.map((id) =>
+      deleteFetch("courses", id as string)
+    );
+    Promise.all(newArrToDelete).then((res) => {
+      notifySuccessDelete();
+      showModalToDeleteFunc();
+      window.location.reload();
     });
   };
 
@@ -105,10 +139,32 @@ const Table = () => {
           </form>
         </Modal>
       )}
+      {showModalToDelete && (
+        <Modal showModalFunc={showModalToDeleteFunc}>
+          <BoxModalToDelete>
+            <h3>¿Deseas eliminar los cursos seleccionados?</h3>
+            <strong>Recuerda el siguiente detalle:</strong>
+
+            <span>Al eliminar no se recuperarán la información</span>
+            <Button type="button" bg="fill-dark" onClick={deleteCourses}>
+              <span>Eliminar curso(s)</span>
+            </Button>
+          </BoxModalToDelete>
+        </Modal>
+      )}
       <TableContainer>
         <div className="tableHead">
           <h3>Todos los Cursos ({coursesData.length})</h3>
           <div className="actions">
+            {coursesToDelete.length > 0 && (
+              <Button
+                type="button"
+                bg="outline-dark"
+                onClick={() => setShowModalToDelete(true)}
+              >
+                <span>Eliminar ({coursesToDelete.length}) cursos</span>
+              </Button>
+            )}
             <Button bg="fill-dark" onClick={showModalFunc} type="button">
               <span>Agregar un curso</span>
             </Button>
@@ -128,11 +184,11 @@ const Table = () => {
           {coursesData.map((course) => {
             return (
               <>
-                <div className={`box `}>
+                <div className={`box `} key={course._id}>
                   <div className={`check`}>
                     <input
                       type="checkbox"
-                      onClick={() => setBlockActive((state) => !state)}
+                      onClick={() => addDeleteCourse(course._id)}
                     />
                   </div>
                   <div className="title">{course.name}</div>
