@@ -17,20 +17,26 @@
   - fetch
   - url_github_client: https://github.com/anthonysa0813/coursesClient
 
-- ojo: No olvidar ingresar al proyecto
+## Imagen del proyecto
+
+![imagen_de_project](public\image_project.png)
+
+## Clonar el repositorio
+
+```bash
+git clone git@github.com:anthonysa0813/coursesClient.git
+```
+
+## Entrar al repositorio
 
 ```bash
 cd courseClient/
 ```
 
-## Imagen del proyecto
-
-![imagen_de_project](public\image_project.png)
-
 ## Descargar las dependencias
 
 ```bash
-  npm install
+  npm install ó yarn install
 ```
 
 ## Correr el proyecto
@@ -38,3 +44,5 @@ cd courseClient/
 ```bash
 yarn dev ó npm run dev
 ```
+
+- Ojo: Correr primero el servidor: https://github.com/anthonysa0813/coursesClient
