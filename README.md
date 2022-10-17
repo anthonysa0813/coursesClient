@@ -45,4 +45,4 @@ cd courseClient/
 yarn dev ó npm run dev
 ```
 
-- Ojo: Correr primero el servidor: https://github.com/anthonysa0813/coursesClient
+- Ojo: Correr primero el servidor: https://github.com/anthonysa0813/CoursesServer
