@@ -11,7 +11,7 @@ import Modal from "./Modal";
 import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import Search from "./Search";
-
+import { IoWarningOutline } from "react-icons/io5";
 const Table = () => {
   const [coursesData, setCoursesData] = useState<CoursesResponse[] | []>([]);
   const [blockActive, setBlockActive] = useState(false);
@@ -202,6 +202,12 @@ const Table = () => {
               <span>Agregar un curso</span>
             </Button>
           </div>
+        </div>
+        <div className="alert-warning">
+          <IoWarningOutline />
+          <span>
+            si deseas eliminar uno o más cursos, debes de primero seleccionarlo.
+          </span>
         </div>
         <div className="tableBox ">
           <div className="box">
